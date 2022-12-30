@@ -1,5 +1,7 @@
 package Main;
 
+import Entity.Card;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -7,11 +9,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Each GamePanel is used to interact with one card
+ */
 public class GamePanel extends JPanel {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    // PANEL SCREEN SETTINGS
+    // Panel screen settings
     final int originalTileSize = 128; // 128x128 tile
     final int scale = 1;
 
@@ -21,12 +26,14 @@ public class GamePanel extends JPanel {
     public final int screenWidth = tileSize * maxScreenCol;  // 128 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 128 pixels
 
-    // USER INPUT OBJECTS
-    KeyHandler keyH = new KeyHandler();
-    MouseHandler mouseH = new MouseHandler();
+    // User input objects
+    GPMouseHandler mouseH = new GPMouseHandler(this);
 
-    // BACKGROUND IMAGE
-    BufferedImage background;
+    // Background image
+    BufferedImage background = null;
+
+    // Card on the panel
+    protected Card card = null;
 
     //******************************************************************************************************************
     //* constructor
@@ -37,11 +44,29 @@ public class GamePanel extends JPanel {
         this.setMaximumSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyH);
         this.addMouseListener(mouseH);
         this.setFocusable(true);
 
         getBackgroundImage();
+    }
+
+    //******************************************************************************************************************
+    //* getters and setters
+    //******************************************************************************************************************
+    /**
+     * Sets this GamePanel's card to the given card
+     * @param card the Card to set this GamePanel's card to
+     */
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    /**
+     * Returns this GamePanel's card
+     * @return this GamePanel's card
+     */
+    public Card getCard() {
+        return this.card;
     }
 
     //******************************************************************************************************************
@@ -61,7 +86,7 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Is called every frame to update the background sprite
+     * Is called every frame to repaint all the sprites on this panel
      */
     public void update() {
         repaint();
@@ -76,7 +101,7 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Generates the Graphics2D object used to draw the background
+     * Uses a Graphics2D object to draw all the sprites on this panel
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -84,6 +109,7 @@ public class GamePanel extends JPanel {
         Graphics2D g2 = (Graphics2D)g;
 
         this.draw(g2);
+        if (card != null) card.draw(g2);
 
         g2.dispose();
     }

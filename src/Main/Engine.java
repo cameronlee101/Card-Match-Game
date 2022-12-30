@@ -1,57 +1,41 @@
 package Main;
 
-import java.awt.*;
-import java.util.ArrayList;
-
+/**
+ * Runs the game
+ */
 public class Engine implements Runnable {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    int FPS = 60;
+    protected int FPS = 60;
 
     // Thread that runs the game
-    Thread gameThread;
-
-    //
-    GamePanel[][] gamePanels;
-    int gamePanelsDimension;
+    protected Thread gameThread;
 
     //******************************************************************************************************************
-    //* constructor
+    //* singleton constructor and methods
     //******************************************************************************************************************
-    public Engine() {
+    private static Engine engine = null;
 
-    }
-
-    //******************************************************************************************************************
-    //* setters and getters
-    //******************************************************************************************************************
-    /**
-     *
-     */
-    public void setGamePanels(GamePanel[][] gamePanels) {
-        this.gamePanels = gamePanels;
-    }
+    private Engine() {}
 
     /**
-     *
+     * Checks if an instance of Engine exists yet. If it does, returns that instance. If not, creates and
+     * returns a new instance
+     * @return the Engine object if it exists already, new Engine object if it doesn't yet
      */
-    public void setGamePanelsDimension(int gamePanelsDimension) {
-        this.gamePanelsDimension = gamePanelsDimension;
+    public static Engine getInstance() {
+        if (engine == null) {
+            engine = new Engine();
+        }
+        return engine;
     }
 
     //******************************************************************************************************************
     //* methods
     //******************************************************************************************************************
     /**
-     *
-     */
-    public void setupGame() {
-
-    }
-
-    /**
-     *
+     * Starts the thread that runs the game
      */
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -59,19 +43,15 @@ public class Engine implements Runnable {
     }
 
     /**
-     *
+     * Calls update on the appropriate objects every frame
      */
-    // TODO: create new class that handles updating all the sprites
     public void update() {
-        for (int i = 0; i < gamePanelsDimension; i++) {
-            for (int j = 0; j < gamePanelsDimension; j++) {
-                gamePanels[i][j].update();
-            }
-        }
+        GameLogicDriver.getInstance();
+        GameLogicDriver.update();
     }
 
     /**
-     *
+     * Is the main loop that runs the game. Calls update() every frame.
      */
     @Override
     public void run() {
@@ -105,13 +85,5 @@ public class Engine implements Runnable {
             }
             */
         }
-    }
-
-    /**
-     *
-     * @param g the <code>Graphics</code> object to protect
-     */
-    public void paintComponent(Graphics g) {
-
     }
 }

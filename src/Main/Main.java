@@ -5,19 +5,9 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        // TODO: create new class that handles creating the window
         // Variables/Objects
-        JFrame window = new JFrame();
-        Engine gameEngine = new Engine();
+        JFrame window = setupWindow(new JFrame());
         int gamePanelsDimension = 4;
-
-        // Window settings
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(true);
-        window.setTitle("Memory Game");
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.setBackground(Color.black);
 
         // Creating all the game panels for the cards
         GamePanel[][] gamePanels = new GamePanel[gamePanelsDimension][gamePanelsDimension];
@@ -44,7 +34,6 @@ public class Main {
         bottomPanel.setLayout(new GridLayout(1,1));
         bottomPanel.add(button1);
 
-
         // Adding in the two main panels to the window
         GridBagConstraints c = new GridBagConstraints();
         window.setLayout(new GridBagLayout());
@@ -59,11 +48,26 @@ public class Main {
 
         window.pack();
 
-        // Adding required attributes to the engine
-        gameEngine.setGamePanels(gamePanels);
-        gameEngine.setGamePanelsDimension(gamePanelsDimension);
+        // Adding required attributes to the GameLogicDriver
+        GameLogicDriver.setGamePanels(gamePanels);
+        GameLogicDriver.setGamePanelsDimension(gamePanelsDimension);
+        // Start the game
+        GameLogicDriver.startGame();
+    }
 
-        // Start game
-        gameEngine.startGameThread();
+    /**
+     * Sets up the given window
+     * @param window The window to set the settings for
+     * @return the window with all the correct settings
+     */
+    private static JFrame setupWindow(JFrame window) {
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(true);
+        window.setTitle("Memory Game");
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        window.setBackground(Color.black);
+
+        return window;
     }
 }
