@@ -8,23 +8,7 @@ public class Main {
         // Variables/Objects
         JFrame window = setupWindow(new JFrame());
         int gamePanelsDimension = 4;
-
-        // Creating all the game panels for the cards
-        GamePanel[][] gamePanels = new GamePanel[gamePanelsDimension][gamePanelsDimension];
-        for (int i = 0; i < gamePanelsDimension; i++) {
-            for (int j = 0; j < gamePanelsDimension; j++) {
-                gamePanels[i][j] = new GamePanel();
-            }
-        }
-
-        // Creating the panel to hold all the card panels
-        JPanel cardPanel = new JPanel();
-        cardPanel.setLayout(new GridLayout(gamePanelsDimension, gamePanelsDimension));
-        for (int i = 0; i < gamePanelsDimension; i++) {
-            for (int j = 0; j < gamePanelsDimension; j++) {
-                cardPanel.add(gamePanels[i][j]);
-            }
-        }
+        GameBoard GB = new GameBoard(gamePanelsDimension, gamePanelsDimension);
 
         // Creating the info panel that goes on the bottom (rn is just a button)
         JPanel bottomPanel = new JPanel();
@@ -40,7 +24,7 @@ public class Main {
         c.fill = GridBagConstraints.BOTH;
 
         c.gridy = 0;
-        window.add(cardPanel, c);
+        window.add(GB, c);
 
         c.weighty = 1.0;
         c.gridy = 1;
@@ -49,8 +33,7 @@ public class Main {
         window.pack();
 
         // Adding required attributes to the GameLogicDriver
-        GameLogicDriver.setGamePanels(gamePanels);
-        GameLogicDriver.setGamePanelsDimension(gamePanelsDimension);
+        GameLogicDriver.setGameBoard(GB);
         // Start the game
         GameLogicDriver.startGame();
     }

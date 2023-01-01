@@ -25,7 +25,8 @@ public class GPMouseHandler implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Mouse clicked");
-        gamePanel.card.flip();
+        GameLogicDriver.getInstance();
+        GameLogicDriver.checkCard(gamePanel.card);
     }
 
     @Override

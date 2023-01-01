@@ -17,8 +17,8 @@ public class GamePanel extends JPanel {
     //* variables
     //******************************************************************************************************************
     // Panel screen settings
-    final int originalTileSize = 128; // 128x128 tile
-    final int scale = 1;
+    public final int originalTileSize = 128; // 128x128 tile
+    public final int scale = 1;
 
     public final int tileSize = originalTileSize * scale; // 128x128 tile
     public final int maxScreenCol = 1;
