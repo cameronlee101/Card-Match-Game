@@ -7,8 +7,7 @@ public class Main {
     public static void main(String[] args) {
         // Variables/Objects
         JFrame window = setupWindow(new JFrame());
-        int gamePanelsDimension = 4;
-        GameBoard GB = new GameBoard(gamePanelsDimension, gamePanelsDimension);
+        GameBoard GB = new GameBoard(4, 4);
 
         // Creating the info panel that goes on the bottom (rn is just a button)
         JPanel bottomPanel = new JPanel();

@@ -18,6 +18,9 @@ public class Card {
     private BufferedImage back, front;
     public boolean flipped = false;
 
+    // Type of card
+    public Symbol symbol;
+
     //******************************************************************************************************************
     //* constructor
     //******************************************************************************************************************
@@ -49,6 +52,8 @@ public class Card {
             System.out.println("Card image loading not working");
             e.printStackTrace();
         }
+
+        this.symbol = symbol;
     }
 
     /**
