@@ -6,12 +6,12 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         // Variables/Objects
-        JFrame window = setupWindow(new JFrame());
+        JFrame window = setupGameWindow();
         GameBoard GB = new GameBoard(4, 4);
 
         // Creating the info panel that goes on the bottom (rn is just a button)
         JPanel bottomPanel = new JPanel();
-        JButton button1 = new JButton();
+        JButton button1 = new JButton("temp button");
         button1.setPreferredSize(new Dimension(512, 128));
         button1.setFocusable(true);
         bottomPanel.setLayout(new GridLayout(1,1));
@@ -38,11 +38,12 @@ public class Main {
     }
 
     /**
-     * Sets up the given window
-     * @param window The window to set the settings for
-     * @return the window with all the correct settings
+     * Creates a new JFrame with this game's default window settings
+     * @return a new JFrame with this game's default window settings
      */
-    private static JFrame setupWindow(JFrame window) {
+    private static JFrame setupGameWindow() {
+        JFrame window = new JFrame();
+
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setTitle("Memory Game");

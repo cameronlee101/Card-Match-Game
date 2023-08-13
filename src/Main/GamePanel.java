@@ -26,11 +26,8 @@ public class GamePanel extends JPanel {
     public final int screenWidth = tileSize * maxScreenCol;  // 128 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 128 pixels
 
-    // User input objects
-    GPMouseHandler mouseH = new GPMouseHandler(this);
-
     // Background image
-    BufferedImage background = null;
+    private BufferedImage background = null;
 
     // Card on the panel
     protected Card card = null;
@@ -44,7 +41,7 @@ public class GamePanel extends JPanel {
         this.setMaximumSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addMouseListener(mouseH);
+        this.addMouseListener(new GPMouseHandler(this));
         this.setFocusable(true);
 
         getBackgroundImage();
@@ -54,8 +51,8 @@ public class GamePanel extends JPanel {
     //* getters and setters
     //******************************************************************************************************************
     /**
-     * Sets this GamePanel's card to the given card
-     * @param card the Card to set this GamePanel's card to
+     * Sets this GamePanel's card to the given Card object
+     * @param card the Card object to set this GamePanel object's card to
      */
     public void setCard(Card card) {
         this.card = card;
@@ -65,6 +62,7 @@ public class GamePanel extends JPanel {
      * Returns this GamePanel's card
      * @return this GamePanel's card
      */
+    @SuppressWarnings("unused")
     public Card getCard() {
         return this.card;
     }
