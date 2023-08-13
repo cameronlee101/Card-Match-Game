@@ -1,4 +1,4 @@
-package Entity;
+package main.java.Entity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,16 +36,16 @@ public class Card {
      */
     private void getCardImage(Symbol symbol) {
         try {
-            back = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardBack.png")));
+            back = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardBack.png")));
             switch (symbol) {
-                case Diamond -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardDiamond.png")));
-                case Club -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardClub.png")));
-                case Heart -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardHeart.png")));
-                case Spade -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardSpade.png")));
-                case Circle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardCircle.png")));
-                case Triangle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardTriangle.png")));
-                case Square -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardSquare.png")));
-                case Hexagon -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempCardHexagon.png")));
+                case Diamond -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardDiamond.png")));
+                case Club -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardClub.png")));
+                case Heart -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardHeart.png")));
+                case Spade -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardSpade.png")));
+                case Circle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardCircle.png")));
+                case Triangle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardTriangle.png")));
+                case Square -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardSquare.png")));
+                case Hexagon -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardHexagon.png")));
             }
         }
         catch (IOException e) {

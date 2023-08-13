@@ -1,7 +1,7 @@
-package Main;
+package main.java.core;
 
-import Entity.Card;
-import Entity.Symbol;
+import main.java.Entity.Card;
+import main.java.Entity.Symbol;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +20,7 @@ public class GameLogicDriver {
     private static Card secondCard = null;
 
     // Variables used to control card flip animations
-    private static int flipDelay = 60;
+    private static final int flipDelay = 60;
     private static int delayTimer = 0;
     private static boolean delayInput = false;
 

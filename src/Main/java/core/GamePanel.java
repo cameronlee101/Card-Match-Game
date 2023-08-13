@@ -1,6 +1,6 @@
-package Main;
+package main.java.core;
 
-import Entity.Card;
+import main.java.Entity.Card;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -75,7 +75,7 @@ public class GamePanel extends JPanel {
      */
     private void getBackgroundImage() {
         try {
-            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Resources/tempBackground.png")));
+            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempBackground.png")));
         }
         catch (IOException e) {
             System.out.println("Background image loading not working");

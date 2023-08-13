@@ -1,4 +1,4 @@
-package Main;
+package main.java.core;
 
 /**
  * Runs the game
