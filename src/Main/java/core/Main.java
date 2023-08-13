@@ -6,7 +6,7 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         // Variables/Objects
-        JFrame window = setupGameWindow();
+        JFrame window = new JFrame();
         GameBoard GB = new GameBoard(4, 4);
 
         // Creating the info panel that goes on the bottom (rn is just a button)
@@ -29,7 +29,7 @@ public class Main {
         c.gridy = 1;
         window.add(bottomPanel, c);
 
-        window.pack();
+        applyWindowSettings(window);
 
         // Adding required attributes to the GameLogicDriver
         GameLogicDriver.setGameBoard(GB);
@@ -38,19 +38,16 @@ public class Main {
     }
 
     /**
-     * Creates a new JFrame with this game's default window settings
-     * @return a new JFrame with this game's default window settings
+     * Applies this game's default window settings to the given JFrame object
+     * @param window the JFrame object to apply this game's default settings to
      */
-    private static JFrame setupGameWindow() {
-        JFrame window = new JFrame();
-
+    private static void applyWindowSettings(JFrame window) {
+        window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(true);
         window.setTitle("Memory Game");
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setBackground(Color.black);
-
-        return window;
     }
 }
