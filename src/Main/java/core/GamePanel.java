@@ -17,14 +17,14 @@ public class GamePanel extends JPanel {
     //* variables
     //******************************************************************************************************************
     // Panel screen settings
-    public final int originalTileSize = 128; // 128x128 tile
-    public final int scale = 1;
+    public static final int originalTileSize = 128; // 128x128 tile
+    public static final int scale = 1;
 
-    public final int tileSize = originalTileSize * scale; // 128x128 tile
-    public final int maxScreenCol = 1;
-    public final int maxScreenRow = 1;
-    public final int screenWidth = tileSize * maxScreenCol;  // 128 pixels
-    public final int screenHeight = tileSize * maxScreenRow; // 128 pixels
+    public static final int tileSize = originalTileSize * scale; // 128x128 tile
+    public static final int maxScreenCol = 1;
+    public static final int maxScreenRow = 1;
+    public static final int screenWidth = tileSize * maxScreenCol;  // 128 pixels
+    public static final int screenHeight = tileSize * maxScreenRow; // 128 pixels
 
     // Background image
     private BufferedImage background = null;
@@ -40,9 +40,7 @@ public class GamePanel extends JPanel {
         this.setMinimumSize(new Dimension(screenWidth, screenHeight));
         this.setMaximumSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
         this.addMouseListener(new GPMouseHandler(this));
-        this.setFocusable(true);
 
         getBackgroundImage();
     }

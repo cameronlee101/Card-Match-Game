@@ -14,7 +14,8 @@ public class GameLogicDriver {
     //* variables
     //******************************************************************************************************************
     private static GameBoard gameBoard;
-    private static int gamePanelsWidth, gamePanelsHeight;
+    private static InfoPanel infoPanel;
+    private static int gamePanelsCols, gamePanelsRows;
 
     private static Card firstCard = null;
     private static Card secondCard = null;
@@ -52,8 +53,16 @@ public class GameLogicDriver {
      */
     public static void setGameBoard(GameBoard gameBoard) {
         GameLogicDriver.gameBoard = gameBoard;
-        gamePanelsWidth = gameBoard.getGamePanelsWidth();
-        gamePanelsHeight = gameBoard.getGamePanelsHeight();
+        gamePanelsCols = gameBoard.getGamePanelsRows();
+        gamePanelsRows = gameBoard.getGamePanelsCols();
+    }
+
+    /**
+     * Sets the GameLogicDriver's matchAttemptsLabel
+     * @param infoPanel the JLabel to set this GameLogicDriver's matchAttemptsLabel to
+     */
+    public static void setInfoPanel(InfoPanel infoPanel) {
+        GameLogicDriver.infoPanel = infoPanel;
     }
 
     //******************************************************************************************************************
@@ -75,8 +84,8 @@ public class GameLogicDriver {
         Random randNumGen = new Random();
         GamePanel[][] gamePanels = gameBoard.getGamePanels();
 
-        for (int i = 0; i < gamePanelsWidth; i++) {
-            for (int j = 0; j < gamePanelsHeight; j++) {
+        for (int i = 0; i < gamePanelsCols; i++) {
+            for (int j = 0; j < gamePanelsRows; j++) {
                 int randNum = randNumGen.nextInt(cardDeck.size());
                 gamePanels[i][j].setCard(cardDeck.remove(randNum));
             }
@@ -90,7 +99,7 @@ public class GameLogicDriver {
         ArrayList<Card> cardDeck = new ArrayList<>();
         Symbol curSymbol = Symbol.Diamond;
 
-        for (int i = 0; i < (gamePanelsWidth * gamePanelsHeight) / 2; i++) {
+        for (int i = 0; i < (gamePanelsCols * gamePanelsRows) / 2; i++) {
             cardDeck.add(new Card(curSymbol));
             cardDeck.add(new Card(curSymbol));
             curSymbol = curSymbol.next();
@@ -110,16 +119,19 @@ public class GameLogicDriver {
                 firstCard = card;
                 card.flip();
             }
-            else if (firstCard.symbol == card.symbol) {
-                System.out.println("Pair found");
-                card.flip();
-                firstCard = null;
-            }
             else {
-                System.out.println("No pair found");
-                secondCard = card;
-                card.flip();
-                delayInput = true;
+                if (firstCard.symbol == card.symbol) {
+                    System.out.println("Pair found");
+                    card.flip();
+                    firstCard = null;
+                } else {
+                    System.out.println("No pair found");
+                    secondCard = card;
+                    card.flip();
+                    delayInput = true;
+                }
+
+                infoPanel.incrementMatchAttempts();
             }
         }
     }
@@ -131,8 +143,8 @@ public class GameLogicDriver {
     public static void update() {
         GamePanel[][] gamePanels = gameBoard.getGamePanels();
 
-        for (int i = 0; i < gamePanelsWidth; i++) {
-            for (int j = 0; j < gamePanelsHeight; j++) {
+        for (int i = 0; i < gamePanelsCols; i++) {
+            for (int j = 0; j < gamePanelsRows; j++) {
                 gamePanels[i][j].update();
             }
         }

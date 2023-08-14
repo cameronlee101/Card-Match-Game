@@ -4,18 +4,42 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
-    public static void main(String[] args) {
-        // Variables/Objects
-        JFrame window = new JFrame();
-        GameBoard GB = new GameBoard(4, 4);
+    private static int rows = 0;
+    private static int cols = 0;
 
-        // Creating the info panel that goes on the bottom (rn is just a button)
-        JPanel bottomPanel = new JPanel();
-        JButton button1 = new JButton("temp button");
-        button1.setPreferredSize(new Dimension(512, 128));
-        button1.setFocusable(true);
-        bottomPanel.setLayout(new GridLayout(1,1));
-        bottomPanel.add(button1);
+    public static void main(String[] args) {
+        getUserDimensionsInput();
+
+        if ((rows * cols) % 2 == 1 && rows > 0 && cols >0) {
+            System.out.println("Number of cards in rows * columns must be even and both must be positive");
+        }
+        else {
+            startCardGame(rows, cols);
+        }
+    }
+
+    /**
+     * Creates a window that takes user input as to how many rows and columns of cards they want the game to have
+     */
+    private static void getUserDimensionsInput() {
+        rows = 4;
+        cols = 5;
+    }
+
+    /**
+     * Creates the window that contains the card matching game
+     * @param cardRows the number of rows of cards that the game will have
+     * @param cardCols the number of columns of cards that the game will have
+     */
+    private static void startCardGame(int cardRows, int cardCols) {
+        // Creates the window that this game is contained in
+        JFrame window = new JFrame();
+
+        // Creates the cardRows by cardCols large grid of GamePanels in one JPanel
+        GameBoard GB = new GameBoard(cardRows, cardCols);
+
+        // Creating the match attempts info panel that goes on the bottom of the window
+        InfoPanel IP = new InfoPanel(cardCols);
 
         // Adding in the two main panels to the window
         GridBagConstraints c = new GridBagConstraints();
@@ -27,13 +51,15 @@ public class Main {
 
         c.weighty = 1.0;
         c.gridy = 1;
-        window.add(bottomPanel, c);
+        window.add(IP, c);
 
         applyWindowSettings(window);
 
         // Adding required attributes to the GameLogicDriver
         GameLogicDriver.setGameBoard(GB);
-        // Start the game
+        GameLogicDriver.setInfoPanel(IP);
+
+        // Starts the game
         GameLogicDriver.startGame();
     }
 
