@@ -73,7 +73,7 @@ public class GamePanel extends JPanel {
      */
     private void getBackgroundImage() {
         try {
-            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempBackground.png")));
+            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/Background.png")));
         }
         catch (IOException e) {
             System.out.println("Background image loading not working");

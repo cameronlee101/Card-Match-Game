@@ -36,13 +36,13 @@ public class Card {
      */
     private void getCardImage(Symbol symbol) {
         try {
-            back = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardBack.png")));
+            back = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBack.png")));
             switch (symbol) {
                 case Diamond -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardDiamond.png")));
                 case Club -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardClub.png")));
                 case Heart -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardHeart.png")));
                 case Spade -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardSpade.png")));
-                case Circle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardCircle.png")));
+                case Circle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardCircle.png")));
                 case Triangle -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardTriangle.png")));
                 case Square -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardSquare.png")));
                 case Hexagon -> front = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/tempCardHexagon.png")));
