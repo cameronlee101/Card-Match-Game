@@ -1,7 +1,7 @@
 package main.java.Entity;
 
 public enum Symbol {
-    Diamond, Club, Heart, Spade, Circle, Triangle, Square, Hexagon;
+    Diamond, Club, Heart, Spade, Circle, Triangle, Square, Star;
 
     private static final Symbol[] vals = values();
 

@@ -23,7 +23,7 @@ public class Main {
      */
     private static void getUserDimensionsInput() {
         rows = 4;
-        cols = 5;
+        cols = 4;
     }
 
     /**
