@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Handles all the game's logic
  */
-public class GameLogicDriver {
+public final class GameLogicDriver {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
@@ -20,29 +20,8 @@ public class GameLogicDriver {
     private static Card firstCard = null;
     private static Card secondCard = null;
 
-    // Variables used to control card flip animations
-    private static final int flipDelay = 60;
-    private static int delayTimer = 0;
-    private static boolean delayInput = false;
-
-    //******************************************************************************************************************
-    //* singleton constructor and methods
-    //******************************************************************************************************************
-    private static GameLogicDriver theGameLogicDriver = null;
-
-    private GameLogicDriver() {}
-
-    /**
-     * Checks if an instance of GameLogicDriver exists yet. If it does, returns that instance. If not, creates and
-     * returns a new instance
-     * @return the GameLogicDriver object if it exists already, new GameLogicDriver object if it doesn't yet
-     */
-    public static GameLogicDriver getInstance() {
-        if (theGameLogicDriver == null) {
-            theGameLogicDriver = new GameLogicDriver();
-        }
-        return theGameLogicDriver;
-    }
+    private static final InputDelayTracker inputDelayTracker = new InputDelayTracker();
+    private static boolean toStartHoldTimer = false;
 
     //******************************************************************************************************************
     //* setters and getters
@@ -114,25 +93,47 @@ public class GameLogicDriver {
      * @param card The current card that the user selected
      */
     public static void checkCard(Card card) {
-        if (!card.flipped && !delayInput) {
+        if (!card.flipped && !inputDelayTracker.delayingInput()) {
             if (firstCard == null) {
                 firstCard = card;
                 card.flip();
+                inputDelayTracker.startFlipTimer();
             }
             else {
                 if (firstCard.symbol == card.symbol) {
                     System.out.println("Pair found");
-                    card.flip();
                     firstCard = null;
                 } else {
                     System.out.println("No pair found");
+                    toStartHoldTimer = true;
                     secondCard = card;
-                    card.flip();
-                    delayInput = true;
                 }
+
+                card.flip();
+                inputDelayTracker.startFlipTimer();
 
                 infoPanel.incrementMatchAttempts();
             }
+        }
+    }
+
+    /**
+     * Is called by a InputDelayTracker when it's holdDelayTimer has reached its limit to reset the two selected cards
+     */
+    public static void unFlipCards() {
+        firstCard.flip();
+        secondCard.flip();
+        firstCard = null;
+        secondCard = null;
+    }
+
+    /**
+     * Is called by a InputDelayTracker to see if it needs to start the holdDelayTimer after its flipDelayTimer finishes
+     */
+    public static void needToStartHold() {
+        if (toStartHoldTimer) {
+            toStartHoldTimer = false;
+            inputDelayTracker.startHoldTimer();
         }
     }
 
@@ -142,23 +143,12 @@ public class GameLogicDriver {
      */
     public static void update() {
         GamePanel[][] gamePanels = gameBoard.getGamePanels();
-
         for (int i = 0; i < gamePanelsCols; i++) {
             for (int j = 0; j < gamePanelsRows; j++) {
                 gamePanels[i][j].update();
             }
         }
 
-        if (delayInput) {
-            delayTimer++;
-            if (delayTimer == flipDelay) {
-                firstCard.flip();
-                secondCard.flip();
-                firstCard = null;
-                secondCard = null;
-                delayInput = false;
-                delayTimer = 0;
-            }
-        }
+        inputDelayTracker.update();
     }
 }

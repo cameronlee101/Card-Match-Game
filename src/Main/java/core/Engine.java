@@ -46,7 +46,6 @@ public class Engine implements Runnable {
      * Calls update on the appropriate objects every frame
      */
     public void update() {
-        GameLogicDriver.getInstance();
         GameLogicDriver.update();
     }
 

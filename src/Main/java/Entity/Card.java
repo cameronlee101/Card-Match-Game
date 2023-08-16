@@ -17,6 +17,8 @@ public class Card {
     // Sprite related variables
     private BufferedImage back, front;
     public boolean flipped = false;
+    private int centerX = 24;
+    private int centerY = 12;
 
     // Type of card
     public Symbol symbol;
@@ -69,10 +71,10 @@ public class Card {
      */
     public void draw(Graphics2D g2) {
         if (flipped) {
-            g2.drawImage(front, 24, 14, cardWidth, cardLength, null);
+            g2.drawImage(front, centerX, centerY, cardWidth, cardLength, null);
         }
         else {
-            g2.drawImage(back, 24, 14, cardWidth, cardLength, null);
+            g2.drawImage(back, centerX, centerY, cardWidth, cardLength, null);
         }
     }
 

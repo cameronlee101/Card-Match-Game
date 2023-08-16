@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
     private BufferedImage background = null;
 
     // Card on the panel
-    protected Card card = null;
+    private Card card = null;
 
     //******************************************************************************************************************
     //* constructor
@@ -60,7 +60,6 @@ public class GamePanel extends JPanel {
      * Returns this GamePanel's card
      * @return this GamePanel's card
      */
-    @SuppressWarnings("unused")
     public Card getCard() {
         return this.card;
     }
