@@ -6,8 +6,8 @@ public class InputDelayTracker {
     //******************************************************************************************************************
     // Various timers and the length of time those timers go for (in frames)
     // note: current implementation makes it so the number of frames the timer goes for is duration-2
-    private static final int flipDelayDuration = 20;
-    private static final int holdDelayDuration = 60;
+    private static final int flipDelayDuration = 10;
+    private static final int holdDelayDuration = 40;
     private static Integer flipDelayTimer = 0;
     private static Integer holdDelayTimer = 0;
 

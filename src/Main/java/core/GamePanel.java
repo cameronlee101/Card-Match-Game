@@ -84,6 +84,7 @@ public class GamePanel extends JPanel {
      * Is called every frame to repaint all the sprites on this panel
      */
     public void update() {
+        card.update();
         repaint();
     }
 
