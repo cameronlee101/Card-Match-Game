@@ -1,7 +1,9 @@
-package main.java.core;
+package main.java.game;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static java.lang.Math.max;
 
 public class InfoPanel extends JPanel {
     //******************************************************************************************************************
@@ -18,7 +20,8 @@ public class InfoPanel extends JPanel {
     //******************************************************************************************************************
     public InfoPanel(int cardCols) {
         this.setLayout(new GridLayout(infoRows, infoCols));
-        this.setPreferredSize(new Dimension(GamePanel.screenWidth * cardCols, GamePanel.screenHeight));
+        this.setPreferredSize(new Dimension(max(GamePanel.screenWidth * 4, GamePanel.screenWidth * cardCols), GamePanel.screenHeight));
+        this.setBackground(Color.WHITE);
 
         updateMatchAttempts();
         matchAttemptsLabel.setHorizontalAlignment(JLabel.CENTER);

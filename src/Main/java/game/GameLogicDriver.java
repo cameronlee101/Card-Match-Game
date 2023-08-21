@@ -1,7 +1,8 @@
-package main.java.core;
+package main.java.game;
 
-import main.java.Entity.Card;
-import main.java.Entity.Symbol;
+import main.java.core.Engine;
+import main.java.entity.Card;
+import main.java.entity.Symbol;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +21,7 @@ public final class GameLogicDriver {
     private static Card firstCard = null;
     private static Card secondCard = null;
 
-    private static final InputDelayTracker inputDelayTracker = new InputDelayTracker();
+    private static InputDelayTracker inputDelayTracker = new InputDelayTracker();
     private static boolean toStartHoldTimer = false;
 
     //******************************************************************************************************************
@@ -150,5 +151,19 @@ public final class GameLogicDriver {
         }
 
         inputDelayTracker.update();
+    }
+
+    /**
+     * Makes all of GameLogicDriver's variables null to reset and prepare for a new game
+     */
+    public static void reset() {
+        gameBoard = null;
+        infoPanel = null;
+        gamePanelsCols = 0;
+        gamePanelsRows = 0;
+        firstCard = null;
+        secondCard = null;
+        inputDelayTracker = new InputDelayTracker();
+        toStartHoldTimer = false;
     }
 }

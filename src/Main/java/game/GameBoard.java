@@ -1,4 +1,4 @@
-package main.java.core;
+package main.java.game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +58,6 @@ public class GameBoard extends JPanel {
         }
 
         this.setPreferredSize(new Dimension(GamePanel.screenWidth * cols, GamePanel.screenHeight * rows));
-        this.setMaximumSize(new Dimension(GamePanel.screenWidth * cols, GamePanel.screenHeight * rows));
-        this.setMinimumSize(new Dimension(GamePanel.screenWidth * cols, GamePanel.screenHeight * rows));
+        this.setBackground(Color.WHITE);
     }
 }

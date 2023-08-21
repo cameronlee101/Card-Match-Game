@@ -1,4 +1,4 @@
-package main.java.Entity;
+package main.java.entity;
 
 public enum Symbol {
     Diamond, Club, Heart, Spade, Circle, Triangle, Square, Star;

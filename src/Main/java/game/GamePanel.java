@@ -1,6 +1,6 @@
-package main.java.core;
+package main.java.game;
 
-import main.java.Entity.Card;
+import main.java.entity.Card;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
