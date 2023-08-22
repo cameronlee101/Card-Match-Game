@@ -8,8 +8,10 @@ public class InputDelayTracker {
     // note: current implementation makes it so the number of frames the timer goes for is duration-2
     private static final int flipDelayDuration = 10;
     private static final int holdDelayDuration = 40;
-    private static Integer flipDelayTimer = 0;
-    private static Integer holdDelayTimer = 0;
+    private static int openingAnimationDelay = 0;
+    private static int flipDelayTimer = 0;
+    private static int holdDelayTimer = 0;
+    private static int openingAnimationDelayTimer = 0;
 
     //******************************************************************************************************************
     //* constructor
@@ -35,11 +37,20 @@ public class InputDelayTracker {
     }
 
     /**
+     * Activates the openingAnimationDelayTimer with the given upper limit
+     * @param openingAnimationDelay the upper limit for this timer
+     */
+    public void startOpeningAnimationDelay(int openingAnimationDelay) {
+        InputDelayTracker.openingAnimationDelay = openingAnimationDelay;
+        openingAnimationDelayTimer++;
+    }
+
+    /**
      * Returns true if one or more of the delay timers have been activated, false if not
      * @return true if one or more of the delay timers have been activated, false if not
      */
     public boolean delayingInput() {
-        return flipDelayTimer != 0 || holdDelayTimer != 0;
+        return flipDelayTimer != 0 || holdDelayTimer != 0 || openingAnimationDelayTimer != 0;
     }
 
     /**
@@ -59,6 +70,13 @@ public class InputDelayTracker {
             if (holdDelayTimer == holdDelayDuration) {
                 holdDelayTimer = 0;
                 GameLogicDriver.unFlipCards();
+            }
+        }
+        if (openingAnimationDelayTimer != 0) {
+            openingAnimationDelayTimer++;
+            if (openingAnimationDelayTimer == openingAnimationDelay) {
+                openingAnimationDelayTimer = 0;
+                GameLogicDriver.beginCardInteraction();
             }
         }
     }

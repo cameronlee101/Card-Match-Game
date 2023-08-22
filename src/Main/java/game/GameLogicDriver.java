@@ -24,6 +24,9 @@ public final class GameLogicDriver {
     private static InputDelayTracker inputDelayTracker = new InputDelayTracker();
     private static boolean toStartHoldTimer = false;
 
+    // Variables related to the opening animation of distribution cards onto each game panel
+    private static boolean inOpeningAnimation = true;
+
     //******************************************************************************************************************
     //* setters and getters
     //******************************************************************************************************************
@@ -54,6 +57,7 @@ public final class GameLogicDriver {
     public static void startGame() {
         setupGame();
         Engine.getInstance().startGameThread();
+        startOpeningAnimation();
     }
 
     /**
@@ -89,12 +93,20 @@ public final class GameLogicDriver {
     }
 
     /**
+     * Calls methods on relevant objects to start the opening card distribution animation
+     */
+    private static void startOpeningAnimation() {
+        gameBoard.startOpeningAnimation();
+        inputDelayTracker.startOpeningAnimationDelay(gamePanelsRows * gamePanelsCols * 10);
+    }
+
+    /**
      * Is called when the user clicks on a game panel with a card. Checks to see if this is the first or second card
      * that the user has selected and runs logic depending on the types of the two cards
      * @param card The current card that the user selected
      */
     public static void checkCard(Card card) {
-        if (!card.flipped && !inputDelayTracker.delayingInput()) {
+        if (!card.flipped && !inputDelayTracker.delayingInput() && !inOpeningAnimation) {
             if (firstCard == null) {
                 firstCard = card;
                 card.flip();
@@ -121,7 +133,7 @@ public final class GameLogicDriver {
     /**
      * Is called by a InputDelayTracker when it's holdDelayTimer has reached its limit to reset the two selected cards
      */
-    public static void unFlipCards() {
+    static void unFlipCards() {
         firstCard.flip();
         secondCard.flip();
         firstCard = null;
@@ -131,11 +143,24 @@ public final class GameLogicDriver {
     /**
      * Is called by a InputDelayTracker to see if it needs to start the holdDelayTimer after its flipDelayTimer finishes
      */
-    public static void needToStartHold() {
+    static void needToStartHold() {
         if (toStartHoldTimer) {
             toStartHoldTimer = false;
             inputDelayTracker.startHoldTimer();
         }
+    }
+
+    /**
+     * Is called by a InputDelayTracker to make the cards visible and clickable after the starting distribution animation
+     */
+    static void beginCardInteraction() {
+        GamePanel[][] gamePanels = gameBoard.getGamePanels();
+        for (int i = 0; i < gamePanelsCols; i++) {
+            for (int j = 0; j < gamePanelsRows; j++) {
+                gamePanels[i][j].getCard().spriteVisible = true;
+            }
+        }
+        inOpeningAnimation = false;
     }
 
     /**

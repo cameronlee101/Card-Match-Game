@@ -15,21 +15,23 @@ public class Card {
     //******************************************************************************************************************
     public final int cardWidth = 80;
     public final int cardLength = 100;
-    private final int centerX = 24;
-    private final int centerY = 12;
+    protected final int centerX = 24;
+    protected final int centerY = 12;
 
     ArrayList<BufferedImage> sprites;   // BufferedImages are organized with flipping the card from back to front
                                         // corresponding to indexes 0 to maxAnimationNum
     public boolean flipped = false;
 
-    private final int minAnimationNum = 0;
-    private final int maxAnimationNum = 5;
-    private int curAnimationNum = 0;
+    protected final int minAnimationNum = 0;
+    protected final int maxAnimationNum = 5;
+    protected int curAnimationNum = 0;
 
-    private final int framesPerAnimation = 2;
-    private int animationTimer = 0;
+    protected final int framesPerAnimation = 2;
+    protected int animationTimer = 0;
 
-    private int flipState = 0;  // 0 = not flipping, 1 = flipping to front, 2 = flipping to back
+    protected int flipState = 0;  // 0 = not flipping, 1 = flipping to front, 2 = flipping to back
+
+    public boolean spriteVisible = false;
 
     // Type of card
     public Symbol symbol;
@@ -164,7 +166,9 @@ public class Card {
     public void draw(Graphics2D g2) {
         int xPos = centerX + ((cardWidth - sprites.get(curAnimationNum).getWidth()) / 2);
         int yPos = centerY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3);
-        g2.drawImage(sprites.get(curAnimationNum), xPos, yPos,
-                     sprites.get(curAnimationNum).getWidth(), sprites.get(curAnimationNum).getHeight(), null);
+        if (spriteVisible) {
+            g2.drawImage(sprites.get(curAnimationNum), xPos, yPos,
+                         sprites.get(curAnimationNum).getWidth(), sprites.get(curAnimationNum).getHeight(), null);
+        }
     }
 }
