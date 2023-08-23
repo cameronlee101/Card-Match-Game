@@ -59,8 +59,11 @@ public class GameBoard extends JPanel {
 
         for (int i = 0; i < gamePanelsRows; i++) {
             for (int j = 0; j < gamePanelsCols; j++) {
+                // Creating row x col GamePanels and adding it into this GameBoard (JPanel subclass)
                 gamePanels[i][j] = new GamePanel();
                 this.add(gamePanels[i][j]);
+                // Creating the MovingCard objects for the opening card distributing animation
+                openAnimationCardDeck.add(new MovingCard(Symbol.Diamond, i, j));
             }
         }
 
@@ -75,9 +78,7 @@ public class GameBoard extends JPanel {
      * TODO: figure out how to store card coordinates/offset for opening animation
      */
     public void startOpeningAnimation() {
-        for (int i = 0; i < (gamePanelsCols * gamePanelsRows); i++) {
-            openAnimationCardDeck.add(new MovingCard(Symbol.Diamond));
-        }
+
     }
 
     /**
@@ -85,8 +86,10 @@ public class GameBoard extends JPanel {
      * @param g2 the Graphics2D object used to draw
      */
     public void draw(Graphics2D g2) {
-        for (MovingCard card : openAnimationCardDeck) {
-            card.draw(g2);
+        while (GameLogicDriver.inOpeningAnimation) {
+            for (MovingCard card : openAnimationCardDeck) {
+                card.draw(g2);
+            }
         }
     }
 

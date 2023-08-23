@@ -15,8 +15,8 @@ public class Card {
     //******************************************************************************************************************
     public final int cardWidth = 80;
     public final int cardLength = 100;
-    protected final int centerX = 24;
-    protected final int centerY = 12;
+    public static final int centerX = 24;
+    public static final int centerY = 12;
 
     ArrayList<BufferedImage> sprites;   // BufferedImages are organized with flipping the card from back to front
                                         // corresponding to indexes 0 to maxAnimationNum

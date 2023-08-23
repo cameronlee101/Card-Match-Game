@@ -25,7 +25,7 @@ public final class GameLogicDriver {
     private static boolean toStartHoldTimer = false;
 
     // Variables related to the opening animation of distribution cards onto each game panel
-    private static boolean inOpeningAnimation = true;
+    static boolean inOpeningAnimation = true;
 
     //******************************************************************************************************************
     //* setters and getters
