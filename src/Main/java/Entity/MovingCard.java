@@ -1,5 +1,6 @@
 package main.java.entity;
 
+import main.java.game.GameLogicDriver;
 import main.java.game.GamePanel;
 
 import java.awt.*;
@@ -8,20 +9,25 @@ public class MovingCard extends Card{
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    public boolean activated;
+    private boolean activated;
 
-    private int positionIncrement = 0;
-    private int maxPositionIncrement = 10;
-    private int finalPosX, finalPosY, startingPosX, startingPosY;
+    private int posIncrementIndex = 0;
+    private final int maxPosIncrementIndex = GameLogicDriver.singleCardDistributionTime;
+    private final int XPosIncrementVal, YPosIncrementVal;
+    private int curPosX, curPosY;
 
     //******************************************************************************************************************
     //* constructor
     //******************************************************************************************************************
-    public MovingCard(Symbol symbol, int rowNum, int colNum) {
+    public MovingCard(Symbol symbol, int rowNum, int colNum, int maxRow, int maxCol) {
         super(symbol);
 
-        finalPosX = centerX + (colNum * GamePanel.screenWidth);
-        finalPosY = centerY;
+        curPosX = ((maxCol * GamePanel.screenWidth) / 2) - (Card.cardStandardWidth / 2);
+        curPosY = maxRow * GamePanel.screenHeight;
+        int finalPosX = centerX + (colNum * GamePanel.screenWidth);
+        int finalPosY = centerY + (rowNum * GamePanel.screenHeight);
+        XPosIncrementVal = (finalPosX - curPosX) / maxPosIncrementIndex;
+        YPosIncrementVal = (finalPosY - curPosY) / maxPosIncrementIndex;
     }
 
     //******************************************************************************************************************
@@ -40,7 +46,11 @@ public class MovingCard extends Card{
     public void update() {
         super.update();
         if (activated) {
-
+            while (posIncrementIndex < maxPosIncrementIndex) {
+                curPosX += XPosIncrementVal;
+                curPosY += YPosIncrementVal;
+                posIncrementIndex++;
+            }
         }
     }
 
@@ -50,11 +60,8 @@ public class MovingCard extends Card{
      */
     @Override
     public void draw(Graphics2D g2) {
-        // TODO: figure out math for card position
-        int xPos = centerX;
-        int yPos = centerY;
-        g2.drawImage(sprites.get(curAnimationNum), xPos, yPos,
-                sprites.get(curAnimationNum).getWidth(), sprites.get(curAnimationNum).getHeight(), null);
+        g2.drawImage(sprites.get(curAnimationNum), curPosX, curPosY,
+                     sprites.get(curAnimationNum).getWidth(), sprites.get(curAnimationNum).getHeight(), null);
     }
 
 }

@@ -26,6 +26,7 @@ public final class GameLogicDriver {
 
     // Variables related to the opening animation of distribution cards onto each game panel
     static boolean inOpeningAnimation = true;
+    public static final int singleCardDistributionTime = 10;
 
     //******************************************************************************************************************
     //* setters and getters
@@ -97,7 +98,7 @@ public final class GameLogicDriver {
      */
     private static void startOpeningAnimation() {
         gameBoard.startOpeningAnimation();
-        inputDelayTracker.startOpeningAnimationDelay(gamePanelsRows * gamePanelsCols * 10);
+        inputDelayTracker.startOpeningAnimationDelay(gamePanelsRows * gamePanelsCols * singleCardDistributionTime);
     }
 
     /**
@@ -164,17 +165,10 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Calls update() on the appropriate objects. Also flips back the two selected cards if they don't match after a
-     * certain amount of time.
+     * Calls update() on the appropriate objects
      */
     public static void update() {
-        GamePanel[][] gamePanels = gameBoard.getGamePanels();
-        for (int i = 0; i < gamePanelsCols; i++) {
-            for (int j = 0; j < gamePanelsRows; j++) {
-                gamePanels[i][j].update();
-            }
-        }
-
+        gameBoard.update();
         inputDelayTracker.update();
     }
 

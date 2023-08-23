@@ -20,6 +20,9 @@ public class GameBoard extends JPanel {
 
     // Variables related to opening animation
     ArrayList<MovingCard> openAnimationCardDeck = new ArrayList<>();
+    int openingCardIndex = 0;
+    int numOfCards;
+    int singleCardMoveTimer = 0;
 
     //******************************************************************************************************************
     //* setters and getters
@@ -54,6 +57,7 @@ public class GameBoard extends JPanel {
     public GameBoard(int rows, int cols) {
         gamePanelsRows = rows;
         gamePanelsCols = cols;
+        numOfCards = rows * cols;
         gamePanels = new GamePanel[gamePanelsRows][gamePanelsCols];
         this.setLayout(new GridLayout(gamePanelsRows, gamePanelsCols));
 
@@ -63,22 +67,43 @@ public class GameBoard extends JPanel {
                 gamePanels[i][j] = new GamePanel();
                 this.add(gamePanels[i][j]);
                 // Creating the MovingCard objects for the opening card distributing animation
-                openAnimationCardDeck.add(new MovingCard(Symbol.Diamond, i, j));
+                openAnimationCardDeck.add(new MovingCard(Symbol.Diamond, i, j, rows, cols));
             }
         }
 
         this.setPreferredSize(new Dimension(GamePanel.screenWidth * cols, GamePanel.screenHeight * rows));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLUE);
+        this.setOpaque(false);
     }
 
     //******************************************************************************************************************
     //* methods
     //******************************************************************************************************************
     /**
-     * TODO: figure out how to store card coordinates/offset for opening animation
+     * Activates each MovingCard object so that they move towards their intended position in set time intervals
      */
     public void startOpeningAnimation() {
+        openAnimationCardDeck.get(openingCardIndex).activate();
+    }
 
+    /**
+     * Calls update() on appropriate objects
+     */
+    public void update() {
+        for (int i = 0; i < gamePanelsRows; i++) {
+            for (int j = 0; j < gamePanelsCols; j++) {
+                gamePanels[i][j].update();
+            }
+        }
+
+        if (singleCardMoveTimer == GameLogicDriver.singleCardDistributionTime) {
+            singleCardMoveTimer = 0;
+            openingCardIndex++;
+            if (openingCardIndex <= openAnimationCardDeck.size() - 1) {
+                openAnimationCardDeck.get(openingCardIndex).activate();
+            }
+        }
+        singleCardMoveTimer++;
     }
 
     /**
@@ -86,7 +111,7 @@ public class GameBoard extends JPanel {
      * @param g2 the Graphics2D object used to draw
      */
     public void draw(Graphics2D g2) {
-        while (GameLogicDriver.inOpeningAnimation) {
+        if (GameLogicDriver.inOpeningAnimation) {
             for (MovingCard card : openAnimationCardDeck) {
                 card.draw(g2);
             }

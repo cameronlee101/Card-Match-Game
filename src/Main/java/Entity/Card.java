@@ -13,8 +13,8 @@ public class Card {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    public final int cardWidth = 80;
-    public final int cardLength = 100;
+    public static final int cardStandardWidth = 80;
+    public static final int cardStandardHeight = 100;
     public static final int centerX = 24;
     public static final int centerY = 12;
 
@@ -164,7 +164,7 @@ public class Card {
      * @param g2 the Graphics2D object used to draw
      */
     public void draw(Graphics2D g2) {
-        int xPos = centerX + ((cardWidth - sprites.get(curAnimationNum).getWidth()) / 2);
+        int xPos = centerX + ((cardStandardWidth - sprites.get(curAnimationNum).getWidth()) / 2);
         int yPos = centerY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3);
         if (spriteVisible) {
             g2.drawImage(sprites.get(curAnimationNum), xPos, yPos,
