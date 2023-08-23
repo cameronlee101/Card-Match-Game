@@ -1,15 +1,21 @@
 package main.java.game;
 
+import main.java.entity.Card;
 import main.java.entity.MovingCard;
 import main.java.entity.Symbol;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * JPanel that holds all the game panels
  */
+// TODO: refactor
 public class GameBoard extends JPanel {
     //******************************************************************************************************************
     //* variables
@@ -23,6 +29,9 @@ public class GameBoard extends JPanel {
     int openingCardIndex = 0;
     int numOfCards;
     int singleCardMoveTimer = 0;
+
+    protected Card[][] cards;
+    private BufferedImage panelBackground;
 
     //******************************************************************************************************************
     //* setters and getters
@@ -51,6 +60,12 @@ public class GameBoard extends JPanel {
         return gamePanelsCols;
     }
 
+    public void setCard(int i, int j, Card card) {
+        cards[i][j] = card;
+        card.setCords(i, j);
+        gamePanels[i][j].setCard(card);
+    }
+
     //******************************************************************************************************************
     //* constructor
     //******************************************************************************************************************
@@ -59,6 +74,7 @@ public class GameBoard extends JPanel {
         gamePanelsCols = cols;
         numOfCards = rows * cols;
         gamePanels = new GamePanel[gamePanelsRows][gamePanelsCols];
+        cards = new Card[gamePanelsRows][gamePanelsCols];
         this.setLayout(new GridLayout(gamePanelsRows, gamePanelsCols));
 
         for (int i = 0; i < gamePanelsRows; i++) {
@@ -68,14 +84,28 @@ public class GameBoard extends JPanel {
                 this.add(gamePanels[i][j]);
                 // Creating the MovingCard objects for the opening card distributing animation
                 openAnimationCardDeck.add(new MovingCard(Symbol.Diamond, i, j, rows, cols));
+                openAnimationCardDeck.get((i * gamePanelsCols) + j).spriteVisible = true;
             }
         }
 
+        getBackgroundImage();
+
         this.setPreferredSize(new Dimension(GamePanel.screenWidth * cols, GamePanel.screenHeight * rows));
-        this.setBackground(Color.BLUE);
         this.setOpaque(false);
     }
 
+    /**
+     * Retrieves the background image for this panel
+     */
+    private void getBackgroundImage() {
+        try {
+            panelBackground = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/Background.png")));
+        }
+        catch (IOException e) {
+            System.out.println("Background image loading not working");
+            e.printStackTrace();
+        }
+    }
     //******************************************************************************************************************
     //* methods
     //******************************************************************************************************************
@@ -92,8 +122,11 @@ public class GameBoard extends JPanel {
     public void update() {
         for (int i = 0; i < gamePanelsRows; i++) {
             for (int j = 0; j < gamePanelsCols; j++) {
-                gamePanels[i][j].update();
+                cards[i][j].update();
             }
+        }
+        for (MovingCard card : openAnimationCardDeck) {
+            card.update();
         }
 
         if (singleCardMoveTimer == GameLogicDriver.singleCardDistributionTime) {
@@ -104,6 +137,8 @@ public class GameBoard extends JPanel {
             }
         }
         singleCardMoveTimer++;
+
+        repaint();
     }
 
     /**
@@ -111,6 +146,14 @@ public class GameBoard extends JPanel {
      * @param g2 the Graphics2D object used to draw
      */
     public void draw(Graphics2D g2) {
+        for (int i = 0; i < gamePanelsRows; i++) {
+            for (int j = 0; j < gamePanelsCols; j++) {
+                g2.drawImage(panelBackground, j * GamePanel.tileSize, i * GamePanel.tileSize,
+                        GamePanel.tileSize, GamePanel.tileSize, null);
+                if (cards[i][j] != null) cards[i][j].draw(g2);
+            }
+        }
+
         if (GameLogicDriver.inOpeningAnimation) {
             for (MovingCard card : openAnimationCardDeck) {
                 card.draw(g2);

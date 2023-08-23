@@ -1,5 +1,7 @@
 package main.java.entity;
 
+import main.java.game.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,6 +11,7 @@ import java.util.Objects;
 
 import static java.lang.Math.max;
 
+// TODO: refactor
 public class Card {
     //******************************************************************************************************************
     //* variables
@@ -17,6 +20,7 @@ public class Card {
     public static final int cardStandardHeight = 100;
     public static final int centerX = 24;
     public static final int centerY = 12;
+    public int row, col;
 
     ArrayList<BufferedImage> sprites;   // BufferedImages are organized with flipping the card from back to front
                                         // corresponding to indexes 0 to maxAnimationNum
@@ -42,6 +46,14 @@ public class Card {
     public Card(Symbol symbol) {
         sprites = new ArrayList<>();
         getCardImage(symbol);
+    }
+
+    //******************************************************************************************************************
+    //* getters and setters
+    //******************************************************************************************************************
+    public void setCords(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     //******************************************************************************************************************
@@ -164,8 +176,8 @@ public class Card {
      * @param g2 the Graphics2D object used to draw
      */
     public void draw(Graphics2D g2) {
-        int xPos = centerX + ((cardStandardWidth - sprites.get(curAnimationNum).getWidth()) / 2);
-        int yPos = centerY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3);
+        int xPos = centerX + ((cardStandardWidth - sprites.get(curAnimationNum).getWidth()) / 2) + (GamePanel.screenWidth * col);
+        int yPos = centerY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3) + (GamePanel.screenHeight * row);
         if (spriteVisible) {
             g2.drawImage(sprites.get(curAnimationNum), xPos, yPos,
                          sprites.get(curAnimationNum).getWidth(), sprites.get(curAnimationNum).getHeight(), null);

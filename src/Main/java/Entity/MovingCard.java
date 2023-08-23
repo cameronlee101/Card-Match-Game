@@ -5,7 +5,8 @@ import main.java.game.GamePanel;
 
 import java.awt.*;
 
-public class MovingCard extends Card{
+// TODO: refactor
+public class MovingCard extends Card {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
@@ -13,7 +14,7 @@ public class MovingCard extends Card{
 
     private int posIncrementIndex = 0;
     private final int maxPosIncrementIndex = GameLogicDriver.singleCardDistributionTime;
-    private final int XPosIncrementVal, YPosIncrementVal;
+    private final int XPosIncrementVal, YPosIncrementVal, finalPosX, finalPosY;
     private int curPosX, curPosY;
 
     //******************************************************************************************************************
@@ -24,8 +25,8 @@ public class MovingCard extends Card{
 
         curPosX = ((maxCol * GamePanel.screenWidth) / 2) - (Card.cardStandardWidth / 2);
         curPosY = maxRow * GamePanel.screenHeight;
-        int finalPosX = centerX + (colNum * GamePanel.screenWidth);
-        int finalPosY = centerY + (rowNum * GamePanel.screenHeight);
+        finalPosX = centerX + (colNum * GamePanel.screenWidth);
+        finalPosY = centerY + (rowNum * GamePanel.screenHeight);
         XPosIncrementVal = (finalPosX - curPosX) / maxPosIncrementIndex;
         YPosIncrementVal = (finalPosY - curPosY) / maxPosIncrementIndex;
     }
@@ -46,10 +47,14 @@ public class MovingCard extends Card{
     public void update() {
         super.update();
         if (activated) {
-            while (posIncrementIndex < maxPosIncrementIndex) {
+            if (posIncrementIndex < maxPosIncrementIndex) {
                 curPosX += XPosIncrementVal;
                 curPosY += YPosIncrementVal;
                 posIncrementIndex++;
+            }
+            else {
+                curPosX = finalPosX;
+                curPosY = finalPosY;
             }
         }
     }

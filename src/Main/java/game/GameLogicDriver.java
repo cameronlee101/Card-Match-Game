@@ -10,6 +10,7 @@ import java.util.Random;
 /**
  * Handles all the game's logic
  */
+// TODO: refactor
 public final class GameLogicDriver {
     //******************************************************************************************************************
     //* variables
@@ -26,7 +27,7 @@ public final class GameLogicDriver {
 
     // Variables related to the opening animation of distribution cards onto each game panel
     static boolean inOpeningAnimation = true;
-    public static final int singleCardDistributionTime = 10;
+    public static final int singleCardDistributionTime = 15;
 
     //******************************************************************************************************************
     //* setters and getters
@@ -67,12 +68,11 @@ public final class GameLogicDriver {
     private static void setupGame() {
         ArrayList<Card> cardDeck = makeCardDeck();
         Random randNumGen = new Random();
-        GamePanel[][] gamePanels = gameBoard.getGamePanels();
 
         for (int i = 0; i < gamePanelsCols; i++) {
             for (int j = 0; j < gamePanelsRows; j++) {
                 int randNum = randNumGen.nextInt(cardDeck.size());
-                gamePanels[i][j].setCard(cardDeck.remove(randNum));
+                gameBoard.setCard(i, j, cardDeck.remove(randNum));
             }
         }
     }
