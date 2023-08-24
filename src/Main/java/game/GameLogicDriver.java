@@ -8,20 +8,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Handles all the game's logic
+ * Handles most of the game's logic
  */
-// TODO: refactor
 public final class GameLogicDriver {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
+    // General game variables
     private static GameBoard gameBoard;
     private static InfoPanel infoPanel;
     private static int gamePanelsCols, gamePanelsRows;
 
+    // Used to keep track of which cards were flipped
     private static Card firstCard = null;
     private static Card secondCard = null;
 
+    // Variables related to delaying accepting user input
     private static InputDelayTracker inputDelayTracker = new InputDelayTracker();
     private static boolean toStartHoldTimer = false;
 
@@ -33,8 +35,9 @@ public final class GameLogicDriver {
     //* setters and getters
     //******************************************************************************************************************
     /**
-     * Sets the GameLogicDriver's gameBoard variable, as well as retrieves the width and height of the GameBoard
-     * @param gameBoard the GameBoard to set this GameLogicDriver's gameBoard to
+     * Sets the GameLogicDriver's 'gameBoard' variable, as well as retrieves the width and height of the GameBoard in
+     * number of game panels
+     * @param gameBoard the GameBoard to set this GameLogicDriver's 'gameBoard' variable to
      */
     public static void setGameBoard(GameBoard gameBoard) {
         GameLogicDriver.gameBoard = gameBoard;
@@ -43,8 +46,8 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Sets the GameLogicDriver's matchAttemptsLabel
-     * @param infoPanel the JLabel to set this GameLogicDriver's matchAttemptsLabel to
+     * Sets this GameLogicDriver's 'infoPanel' variable
+     * @param infoPanel the InfoPanel to set this GameLogicDriver's 'infoPanel' to
      */
     public static void setInfoPanel(InfoPanel infoPanel) {
         GameLogicDriver.infoPanel = infoPanel;
@@ -63,7 +66,7 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Creates and randomly distributes the cards for each game panel
+     * Creates and randomly distributes the cards in the game board
      */
     private static void setupGame() {
         ArrayList<Card> cardDeck = makeCardDeck();
@@ -78,7 +81,7 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Creates an arraylist of two of each type of card to be distributed onto each game panel
+     * Creates an arraylist of two of each type of card to be distributed onto the game board
      */
     private static ArrayList<Card> makeCardDeck() {
         ArrayList<Card> cardDeck = new ArrayList<>();
@@ -106,6 +109,7 @@ public final class GameLogicDriver {
      * that the user has selected and runs logic depending on the types of the two cards
      * @param card The current card that the user selected
      */
+    // TODO: bug when clicking the same card too fast
     public static void checkCard(Card card) {
         if (!card.flipped && !inputDelayTracker.delayingInput() && !inOpeningAnimation) {
             if (firstCard == null) {
@@ -159,16 +163,9 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Calls update() on the appropriate objects
-     */
-    public static void update() {
-        gameBoard.update();
-        inputDelayTracker.update();
-    }
-
-    /**
      * Makes all of GameLogicDriver's variables null to reset and prepare for a new game
      */
+    @SuppressWarnings("unused")
     public static void reset() {
         gameBoard = null;
         infoPanel = null;
@@ -178,5 +175,16 @@ public final class GameLogicDriver {
         secondCard = null;
         inputDelayTracker = new InputDelayTracker();
         toStartHoldTimer = false;
+    }
+
+    //******************************************************************************************************************
+    //* methods called every frame
+    //******************************************************************************************************************
+    /**
+     * Calls update() on the appropriate objects
+     */
+    public static void update() {
+        gameBoard.update();
+        inputDelayTracker.update();
     }
 }

@@ -20,7 +20,7 @@ public class InfoPanel extends JPanel {
     //******************************************************************************************************************
     public InfoPanel(int cardCols) {
         this.setLayout(new GridLayout(infoRows, infoCols));
-        this.setPreferredSize(new Dimension(max(GamePanel.screenWidth * 4, GamePanel.screenWidth * cardCols), GamePanel.screenHeight));
+        this.setPreferredSize(new Dimension(max(GameBoard.panelScreenWidth * 4, GameBoard.panelScreenWidth * cardCols), GameBoard.panelScreenHeight));
         this.setBackground(Color.WHITE);
 
         updateMatchAttempts();
@@ -35,11 +35,17 @@ public class InfoPanel extends JPanel {
     //******************************************************************************************************************
     //* methods
     //******************************************************************************************************************
+    /**
+     * Increments the number of match attempts and updates the JLabel that displays that number
+     */
     public void incrementMatchAttempts() {
         matchAttempts++;
         updateMatchAttempts();
     }
 
+    /**
+     * Updates the JLabel that displays the number of match attempts
+     */
     private void updateMatchAttempts() {
         matchAttemptsLabel.setText("<html>Total Match Attempts: " + matchAttempts + "</html>");
     }

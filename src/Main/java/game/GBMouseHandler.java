@@ -3,20 +3,17 @@ package main.java.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Used by a GamePanel to see when the player clicks on that panel
- */
-public class GPMouseHandler implements MouseListener {
+public class GBMouseHandler implements MouseListener {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    GamePanel gamePanel;
+    GameBoard gameBoard;
 
     //******************************************************************************************************************
     //* constructor
     //******************************************************************************************************************
-    public GPMouseHandler(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public GBMouseHandler(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     //******************************************************************************************************************
@@ -24,27 +21,27 @@ public class GPMouseHandler implements MouseListener {
     //******************************************************************************************************************
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        // Unused
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("Mouse pressed");
-        GameLogicDriver.checkCard(gamePanel.getCard());
+        gameBoard.checkCard(e.getX(), e.getY());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        // Unused
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        // Unused
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        // Unused
     }
 }

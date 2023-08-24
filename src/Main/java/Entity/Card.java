@@ -1,7 +1,7 @@
 package main.java.entity;
 
+import main.java.game.GameBoard;
 import main.java.game.GameLogicDriver;
-import main.java.game.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,8 +19,8 @@ public class Card {
     // Card constants
     public static final int cardStandardWidth = 80;
     public static final int cardStandardHeight = 100;
-    public static final int centerX = (GamePanel.screenWidth - cardStandardWidth) / 2;
-    public static final int centerY = (GamePanel.screenHeight - cardStandardHeight) / 2;
+    public static final int centerX = (GameBoard.panelScreenWidth - cardStandardWidth) / 2;
+    public static final int centerY = (GameBoard.panelScreenHeight - cardStandardHeight) / 2;
 
     // Type of card
     protected Symbol symbol;
@@ -122,7 +122,7 @@ public class Card {
     }
 
     //******************************************************************************************************************
-    //* methods
+    //* general methods
     //******************************************************************************************************************
     /**
      * Set various variables so that this card can calculate where it should be and where it needs to go
@@ -132,16 +132,16 @@ public class Card {
      * @param maxCol the number of columns present in the game
      */
     public void initialize(int rowNum, int colNum, int maxRow, int maxCol) {
-        curPosX = ((maxCol * GamePanel.screenWidth) / 2) - (Card.cardStandardWidth / 2);
-        curPosY = maxRow * GamePanel.screenHeight;
-        finalPosX = centerX + (colNum * GamePanel.screenWidth);
-        finalPosY = centerY + (rowNum * GamePanel.screenHeight);
+        curPosX = ((maxCol * GameBoard.panelScreenWidth) / 2) - (Card.cardStandardWidth / 2);
+        curPosY = maxRow * GameBoard.panelScreenHeight;
+        finalPosX = centerX + (colNum * GameBoard.panelScreenWidth);
+        finalPosY = centerY + (rowNum * GameBoard.panelScreenHeight);
         XPosIncrementVal = (finalPosX - curPosX) / maxPosIncrementIndex;
         YPosIncrementVal = (finalPosY - curPosY) / maxPosIncrementIndex;
     }
 
     /**
-     * Activates this Card so that it starts moving from the start position towards it's intended position
+     * Activates this Card so that it starts moving from the start position towards it's row x col position
      */
     public void activate() {
         this.activated = true;
@@ -163,6 +163,19 @@ public class Card {
         }
     }
 
+    /**
+     * Given an x and y coordinate, returns true if that coordinate is within the range of this Card object
+     * @param x the x portion of the position to check (x increases from left to right)
+     * @param y the y portion of the position to check (y increases from top to down)
+     * @return true if x y coordinate pair is within range of the Card object, false if not
+     */
+    public boolean pointInRange(int x, int y) {
+        return x >= curPosX && x <= curPosX + cardStandardWidth && y >= curPosY && y <= curPosY + cardStandardHeight;
+    }
+
+    //******************************************************************************************************************
+    //* methods called every frame
+    //******************************************************************************************************************
     /**
      * Is called every frame to update this card's sprite and position
      */
@@ -200,8 +213,8 @@ public class Card {
                 posIncrementIndex++;
             }
             else {
-                curPosX = finalPosX + ((cardStandardWidth - sprites.get(curAnimationNum).getWidth()) / 2) + (GamePanel.screenWidth * col);
-                curPosY = finalPosY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3) + (GamePanel.screenHeight * row);
+                curPosX = finalPosX + ((cardStandardWidth - sprites.get(curAnimationNum).getWidth()) / 2) + (GameBoard.panelScreenWidth * col);
+                curPosY = finalPosY + (max(minAnimationNum - curAnimationNum, curAnimationNum - maxAnimationNum) * 3) + (GameBoard.panelScreenHeight * row);
             }
         }
     }
