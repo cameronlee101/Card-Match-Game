@@ -20,7 +20,7 @@ public class Card {
     public static final int cardStandardWidth = 80;
     public static final int cardStandardHeight = 100;
     public static final int centerX = (GamePanel.screenWidth - cardStandardWidth) / 2;
-    public static final int centerY = (GamePanel.screenHeight - cardStandardWidth) / 2;
+    public static final int centerY = (GamePanel.screenHeight - cardStandardHeight) / 2;
 
     // Type of card
     protected Symbol symbol;
