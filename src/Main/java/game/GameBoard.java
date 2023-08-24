@@ -1,15 +1,12 @@
 package main.java.game;
 
 import main.java.entity.Card;
-import main.java.entity.MovingCard;
-import main.java.entity.Symbol;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -25,7 +22,6 @@ public class GameBoard extends JPanel {
     protected int gamePanelsCols;
 
     // Variables related to opening animation
-    ArrayList<MovingCard> openAnimationCardDeck = new ArrayList<>();
     int openingCardIndex = 0;
     int numOfCards;
     int singleCardMoveTimer = 0;
@@ -62,7 +58,7 @@ public class GameBoard extends JPanel {
 
     public void setCard(int i, int j, Card card) {
         cards[i][j] = card;
-        card.setCords(i, j);
+        card.initialize(i, j, gamePanelsRows, gamePanelsCols);
         gamePanels[i][j].setCard(card);
     }
 
@@ -82,9 +78,6 @@ public class GameBoard extends JPanel {
                 // Creating row x col GamePanels and adding it into this GameBoard (JPanel subclass)
                 gamePanels[i][j] = new GamePanel();
                 this.add(gamePanels[i][j]);
-                // Creating the MovingCard objects for the opening card distributing animation
-                openAnimationCardDeck.add(new MovingCard(Symbol.Diamond, i, j, rows, cols));
-                openAnimationCardDeck.get((i * gamePanelsCols) + j).spriteVisible = true;
             }
         }
 
@@ -113,7 +106,7 @@ public class GameBoard extends JPanel {
      * Activates each MovingCard object so that they move towards their intended position in set time intervals
      */
     public void startOpeningAnimation() {
-        openAnimationCardDeck.get(openingCardIndex).activate();
+        cards[openingCardIndex / gamePanelsCols][openingCardIndex % gamePanelsCols].activate();
     }
 
     /**
@@ -125,15 +118,12 @@ public class GameBoard extends JPanel {
                 cards[i][j].update();
             }
         }
-        for (MovingCard card : openAnimationCardDeck) {
-            card.update();
-        }
 
         if (singleCardMoveTimer == GameLogicDriver.singleCardDistributionTime) {
             singleCardMoveTimer = 0;
             openingCardIndex++;
-            if (openingCardIndex <= openAnimationCardDeck.size() - 1) {
-                openAnimationCardDeck.get(openingCardIndex).activate();
+            if (openingCardIndex <= gamePanelsRows * gamePanelsCols - 1) {
+                cards[openingCardIndex / gamePanelsCols][openingCardIndex % gamePanelsCols].activate();
             }
         }
         singleCardMoveTimer++;
@@ -150,13 +140,12 @@ public class GameBoard extends JPanel {
             for (int j = 0; j < gamePanelsCols; j++) {
                 g2.drawImage(panelBackground, j * GamePanel.tileSize, i * GamePanel.tileSize,
                         GamePanel.tileSize, GamePanel.tileSize, null);
-                if (cards[i][j] != null) cards[i][j].draw(g2);
             }
         }
 
-        if (GameLogicDriver.inOpeningAnimation) {
-            for (MovingCard card : openAnimationCardDeck) {
-                card.draw(g2);
+        for (int i = 0; i < gamePanelsRows; i++) {
+            for (int j = 0; j < gamePanelsCols; j++) {
+                if (cards[i][j] != null) cards[i][j].draw(g2);
             }
         }
     }

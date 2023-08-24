@@ -114,7 +114,7 @@ public final class GameLogicDriver {
                 inputDelayTracker.startFlipTimer();
             }
             else {
-                if (firstCard.symbol == card.symbol) {
+                if (firstCard.getSymbol() == card.getSymbol()) {
                     System.out.println("Pair found");
                     firstCard = null;
                 } else {
@@ -155,12 +155,6 @@ public final class GameLogicDriver {
      * Is called by a InputDelayTracker to make the cards visible and clickable after the starting distribution animation
      */
     static void beginCardInteraction() {
-        GamePanel[][] gamePanels = gameBoard.getGamePanels();
-        for (int i = 0; i < gamePanelsCols; i++) {
-            for (int j = 0; j < gamePanelsRows; j++) {
-                gamePanels[i][j].getCard().spriteVisible = true;
-            }
-        }
         inOpeningAnimation = false;
     }
 
