@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.Math.max;
@@ -23,7 +24,7 @@ public class Card {
     public static final int centerY = (GameBoard.panelScreenHeight - cardStandardHeight) / 2;
 
     // Type of card
-    protected Symbol symbol;
+    protected Symbol cardSymbol;
 
     // Variables related to card flipping animation
     ArrayList<BufferedImage> sprites = new ArrayList<>();   // BufferedImages are organized with flipping the card from
@@ -50,54 +51,30 @@ public class Card {
     //******************************************************************************************************************
     //* constructor
     //******************************************************************************************************************
-    public Card(Symbol symbol) {
+    public Card(Symbol cardSymbol) {
         try {
             sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBack.png"))));
             sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBackFlipping50.png"))));
             sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBackFlipping20.png"))));
 
-            // TODO: needs refactoring somehow
-            switch (symbol) {
-                case Diamond -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardDiamondFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardDiamondFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardDiamond.png"))));
+            Map<Symbol, String> symbolImagePaths = Map.of(
+                Symbol.Diamond, "CardDiamond",
+                Symbol.Club, "CardClub",
+                Symbol.Heart, "CardHeart",
+                Symbol.Spade, "CardSpade",
+                Symbol.Circle, "CardCircle",
+                Symbol.Triangle, "CardTriangle",
+                Symbol.Square, "CardSquare",
+                Symbol.Star, "CardStar"
+            );
+
+            String symbolName = symbolImagePaths.get(cardSymbol);
+            if (symbolName != null) {
+                for (int i : new int[]{20, 50}) {
+                    String imagePath = String.format("/main/resources/%sFrontFlipping%d.png", symbolName, i);
+                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource(imagePath))));
                 }
-                case Club -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardClubFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardClubFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardClub.png"))));
-                }
-                case Heart -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardHeartFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardHeartFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardHeart.png"))));
-                }
-                case Spade -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSpadeFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSpadeFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSpade.png"))));
-                }
-                case Circle -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardCircleFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardCircleFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardCircle.png"))));
-                }
-                case Triangle -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardTriangleFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardTriangleFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardTriangle.png"))));
-                }
-                case Square -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSquareFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSquareFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardSquare.png"))));
-                }
-                case Star -> {
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardStarFrontFlipping20.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardStarFrontFlipping50.png"))));
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardStar.png"))));
-                }
+                sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/" + symbolName + ".png"))));
             }
 
             assert sprites.size() == maxAnimationNum + 1;
@@ -107,18 +84,18 @@ public class Card {
             e.printStackTrace();
         }
 
-        this.symbol = symbol;
+        this.cardSymbol = cardSymbol;
     }
 
     //******************************************************************************************************************
     //* getters and setters
     //******************************************************************************************************************
     /**
-     * Returns this Card object's symbol attribute
-     * @return this Card object's symbol attribute
+     * Returns this Card object's cardSymbol attribute
+     * @return this Card object's cardSymbol attribute
      */
-    public Symbol getSymbol() {
-        return symbol;
+    public Symbol getCardSymbol() {
+        return cardSymbol;
     }
 
     //******************************************************************************************************************

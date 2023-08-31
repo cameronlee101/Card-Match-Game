@@ -118,7 +118,7 @@ public final class GameLogicDriver {
                 inputDelayTracker.startFlipTimer();
             }
             else {
-                if (firstCard.getSymbol() == card.getSymbol()) {
+                if (firstCard.getCardSymbol() == card.getCardSymbol()) {
                     System.out.println("Pair found");
                     firstCard = null;
                 } else {
