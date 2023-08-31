@@ -18,6 +18,7 @@ public final class GameLogicDriver {
     private static GameBoard gameBoard;
     private static InfoPanel infoPanel;
     private static int gamePanelsCols, gamePanelsRows;
+    private static boolean gameRunning = false;
 
     // Used to keep track of which cards were flipped
     private static Card firstCard = null;
@@ -31,6 +32,10 @@ public final class GameLogicDriver {
     static boolean inOpeningAnimation = true;
     public static final int singleCardDistributionTime = 15;
 
+    // Variables related to tracking number of matches, as well as ending the game
+    private static int numOfMatches = 0;
+    private static int maxNumOfMatches = 0;
+
     //******************************************************************************************************************
     //* setters and getters
     //******************************************************************************************************************
@@ -43,6 +48,8 @@ public final class GameLogicDriver {
         GameLogicDriver.gameBoard = gameBoard;
         gamePanelsCols = gameBoard.getGamePanelsRows();
         gamePanelsRows = gameBoard.getGamePanelsCols();
+
+        maxNumOfMatches = gamePanelsCols * gamePanelsRows / 2;
     }
 
     /**
@@ -60,6 +67,7 @@ public final class GameLogicDriver {
      * Runs the appropriate methods to start the game
      */
     public static void startGame() {
+        gameRunning = true;
         setupGame();
         Engine.getInstance().startGameThread();
         startOpeningAnimation();
@@ -105,13 +113,13 @@ public final class GameLogicDriver {
     }
 
     /**
-     * Is called when the user clicks on a game panel with a card. Checks to see if this is the first or second card
-     * that the user has selected and runs logic depending on the types of the two cards
+     * Is called when the user clicks on a card. Checks to see if this is the first or second card that the user has
+     * selected and runs logic depending on the types of the two cards if this is the second card
+     * If the user has successfully matched all the cards, runs game ending logic
      * @param card The current card that the user selected
      */
-    // TODO: bug when clicking the same card too fast
     public static void checkCard(Card card) {
-        if (!card.flipped && !inputDelayTracker.delayingInput() && !inOpeningAnimation) {
+        if (!card.flipped && !inputDelayTracker.delayingInput() && !inOpeningAnimation && card.getFlipState() == 0) {
             if (firstCard == null) {
                 firstCard = card;
                 card.flip();
@@ -121,6 +129,7 @@ public final class GameLogicDriver {
                 if (firstCard.getCardSymbol() == card.getCardSymbol()) {
                     System.out.println("Pair found");
                     firstCard = null;
+                    numOfMatches++;
                 } else {
                     System.out.println("No pair found");
                     toStartHoldTimer = true;
@@ -131,6 +140,11 @@ public final class GameLogicDriver {
                 inputDelayTracker.startFlipTimer();
 
                 infoPanel.incrementMatchAttempts();
+
+                if (numOfMatches == maxNumOfMatches) {
+                    System.out.println("End Game");
+                    inputDelayTracker.startEndGameTimer();
+                }
             }
         }
     }
@@ -163,6 +177,14 @@ public final class GameLogicDriver {
     }
 
     /**
+     * Is called by a InputDelayTracker to end the current game
+     */
+    static void endGame() {
+        gameRunning = false;
+        // TODO: game ending logic
+    }
+
+    /**
      * Makes all of GameLogicDriver's variables null to reset and prepare for a new game
      */
     @SuppressWarnings("unused")
@@ -184,7 +206,9 @@ public final class GameLogicDriver {
      * Calls update() on the appropriate objects
      */
     public static void update() {
-        gameBoard.update();
-        inputDelayTracker.update();
+        if (gameRunning) {
+            gameBoard.update();
+            inputDelayTracker.update();
+        }
     }
 }

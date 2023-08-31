@@ -98,6 +98,14 @@ public class Card {
         return cardSymbol;
     }
 
+    /**
+     * Returns this Card object's flipState attribute
+     * @return this Card object's flipState attribute
+     */
+    public int getFlipState() {
+        return flipState;
+    }
+
     //******************************************************************************************************************
     //* general methods
     //******************************************************************************************************************

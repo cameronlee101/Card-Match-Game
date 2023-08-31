@@ -1,5 +1,6 @@
 package main.java.core;
 
+import main.java.entity.Symbol;
 import main.java.game.GameBoard;
 import main.java.game.GameLogicDriver;
 import main.java.game.InfoPanel;
@@ -14,6 +15,13 @@ public class Main {
     private static volatile boolean validInput = false;
 
     public static void main(String[] args) {
+        createNewGame();
+    }
+
+    /**
+     * Creates a new card game
+     */
+    private static void createNewGame() {
         JFrame window = new JFrame();
 
         getUserDimensionsInput(window);
@@ -32,8 +40,11 @@ public class Main {
         // Components contained in the panel that goes in the window
         JLabel label1 = new JLabel("<html>Enter number of rows (min. 1, max. 6):</html>");
         JLabel label2 = new JLabel("<html>Enter number of columns (min. 4, max. 14):</html>");
-        JLabel errorLabel = new JLabel("<html>note: <em>rows * columns</em> must be positive and even</html>");
-        errorLabel.setPreferredSize(new Dimension(300, 40));
+        JLabel errorLabel = new JLabel("<html>note 1: <em>rows * columns</em> must be positive and even\n" +
+                "note 2: there are currently " + Symbol.values().length + " different card symbols in this game." +
+                " If rows * columns is greater than " + (Symbol.values().length*2) + ", there will be more than 1" +
+                " pair of certain cards</html>");
+        errorLabel.setPreferredSize(new Dimension(300, 80));
 
         InputTextBox inputBox1 = new InputTextBox();
         InputTextBox inputBox2 = new InputTextBox();

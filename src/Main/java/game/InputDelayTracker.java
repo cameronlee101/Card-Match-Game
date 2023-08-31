@@ -8,10 +8,13 @@ public class InputDelayTracker {
     // note: current implementation makes it so the number of frames the timer goes for is duration-2
     private static final int flipDelayDuration = 10;
     private static final int holdDelayDuration = 40;
-    private static int openingAnimationDelay = 0;
+    private static int openAnimationDelayDuration = 0;
+    private static final int gameEndDelayDuration = 30;
+
     private static int flipDelayTimer = 0;
     private static int holdDelayTimer = 0;
-    private static int openingAnimationDelayTimer = 0;
+    private static int openAnimationDelayTimer = 0;
+    private static int gameEndDelayTimer = 0;
 
     //******************************************************************************************************************
     //* constructor
@@ -38,11 +41,18 @@ public class InputDelayTracker {
 
     /**
      * Activates the openingAnimationDelayTimer with the given upper limit
-     * @param openingAnimationDelay the upper limit for this timer
+     * @param openAnimationDelayDuration the upper limit for this timer
      */
-    public void startOpeningAnimationDelay(int openingAnimationDelay) {
-        InputDelayTracker.openingAnimationDelay = openingAnimationDelay;
-        openingAnimationDelayTimer++;
+    public void startOpeningAnimationDelay(int openAnimationDelayDuration) {
+        InputDelayTracker.openAnimationDelayDuration = openAnimationDelayDuration;
+        openAnimationDelayTimer++;
+    }
+
+    /**
+     * Activates the endGameTimer (Allows the game a bit of time to finish animations and calculations before ending)
+     */
+    public void startEndGameTimer() {
+        gameEndDelayTimer++;
     }
 
     /**
@@ -50,7 +60,7 @@ public class InputDelayTracker {
      * @return true if one or more of the delay timers have been activated, false if not
      */
     public boolean delayingInput() {
-        return flipDelayTimer != 0 || holdDelayTimer != 0 || openingAnimationDelayTimer != 0;
+        return flipDelayTimer != 0 || holdDelayTimer != 0 || openAnimationDelayTimer != 0 || gameEndDelayTimer != 0;
     }
 
     /**
@@ -59,24 +69,38 @@ public class InputDelayTracker {
      */
     public void update() {
         if (flipDelayTimer != 0) {
-            flipDelayTimer++;
             if (flipDelayTimer == flipDelayDuration) {
                 flipDelayTimer = 0;
                 GameLogicDriver.needToStartHold();
             }
+            else {
+                flipDelayTimer++;
+            }
         }
         if (holdDelayTimer != 0) {
-            holdDelayTimer++;
             if (holdDelayTimer == holdDelayDuration) {
                 holdDelayTimer = 0;
                 GameLogicDriver.unFlipCards();
             }
+            else {
+                holdDelayTimer++;
+            }
         }
-        if (openingAnimationDelayTimer != 0) {
-            openingAnimationDelayTimer++;
-            if (openingAnimationDelayTimer == openingAnimationDelay) {
-                openingAnimationDelayTimer = 0;
+        if (openAnimationDelayTimer != 0) {
+            if (openAnimationDelayTimer == openAnimationDelayDuration) {
+                openAnimationDelayTimer = 0;
                 GameLogicDriver.beginCardInteraction();
+            }
+            else {
+                openAnimationDelayTimer++;
+            }
+        }
+        if (gameEndDelayTimer != 0) {
+            if (gameEndDelayTimer == gameEndDelayDuration) {
+                gameEndDelayTimer = 0;
+                GameLogicDriver.endGame();
+            } else {
+                gameEndDelayTimer++;
             }
         }
     }
