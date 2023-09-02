@@ -1,6 +1,7 @@
 package main.java.game;
 
 import main.java.core.Engine;
+import main.java.core.Main;
 import main.java.entity.Card;
 import main.java.entity.Symbol;
 
@@ -18,7 +19,10 @@ public final class GameLogicDriver {
     private static GameBoard gameBoard;
     private static InfoPanel infoPanel;
     private static int gamePanelsCols, gamePanelsRows;
+
+    // Variables related to running and ending the game
     private static boolean gameRunning = false;
+    private static boolean threadRunning = false;
 
     // Used to keep track of which cards were flipped
     private static Card firstCard = null;
@@ -32,7 +36,7 @@ public final class GameLogicDriver {
     static boolean inOpeningAnimation = true;
     public static final int singleCardDistributionTime = 15;
 
-    // Variables related to tracking number of matches, as well as ending the game
+    // Variables related to tracking number of matches
     private static int numOfMatches = 0;
     private static int maxNumOfMatches = 0;
 
@@ -60,6 +64,14 @@ public final class GameLogicDriver {
         GameLogicDriver.infoPanel = infoPanel;
     }
 
+    /**
+     * Returns whether this game still needs the thread to run or not
+     * @return whether this game still needs the thread to run or not
+     */
+    public static boolean threadRunning() {
+        return GameLogicDriver.threadRunning;
+    }
+
     //******************************************************************************************************************
     //* methods
     //******************************************************************************************************************
@@ -68,6 +80,7 @@ public final class GameLogicDriver {
      */
     public static void startGame() {
         gameRunning = true;
+        threadRunning = true;
         setupGame();
         Engine.getInstance().startGameThread();
         startOpeningAnimation();
@@ -119,6 +132,7 @@ public final class GameLogicDriver {
      * @param card The current card that the user selected
      */
     public static void checkCard(Card card) {
+        System.out.println("Checking card");
         if (!card.flipped && !inputDelayTracker.delayingInput() && !inOpeningAnimation && card.getFlipState() == 0) {
             if (firstCard == null) {
                 firstCard = card;
@@ -142,7 +156,7 @@ public final class GameLogicDriver {
                 infoPanel.incrementMatchAttempts();
 
                 if (numOfMatches == maxNumOfMatches) {
-                    System.out.println("End Game");
+                    System.out.println("Ending Game");
                     inputDelayTracker.startEndGameTimer();
                 }
             }
@@ -181,13 +195,17 @@ public final class GameLogicDriver {
      */
     static void endGame() {
         gameRunning = false;
+
         // TODO: game ending logic
+
+        threadRunning = false;
+
+        Main.createNewGame();
     }
 
     /**
      * Makes all of GameLogicDriver's variables null to reset and prepare for a new game
      */
-    @SuppressWarnings("unused")
     public static void reset() {
         gameBoard = null;
         infoPanel = null;
@@ -197,6 +215,9 @@ public final class GameLogicDriver {
         secondCard = null;
         inputDelayTracker = new InputDelayTracker();
         toStartHoldTimer = false;
+        inOpeningAnimation = true;
+        numOfMatches = 0;
+        maxNumOfMatches = 0;
     }
 
     //******************************************************************************************************************

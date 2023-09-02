@@ -9,10 +9,10 @@ public class Engine implements Runnable {
     //******************************************************************************************************************
     //* variables
     //******************************************************************************************************************
-    protected int FPS = 60;
+    protected final int FPS = 60;
 
     // Thread that runs the game
-    protected Thread gameThread;
+    public Thread gameThread;
 
     //******************************************************************************************************************
     //* singleton constructor and methods
@@ -40,8 +40,11 @@ public class Engine implements Runnable {
      * Starts the thread that runs the game
      */
     public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
+        if (gameThread == null) {
+            System.out.println("Starting thread");
+            gameThread = new Thread(this);
+            gameThread.start();
+        }
     }
 
     /**
@@ -55,36 +58,40 @@ public class Engine implements Runnable {
      * Is the main loop that runs the game. Calls update() every frame.
      */
     @Override
+    @SuppressWarnings("all")
     public void run() {
-
-        double drawInterval = (double)1000000000/FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-        long timer = 0;
-        int drawCount = 0;
+        long targetFrameTime = 1000000000 / FPS; // Desired frame time for 60 FPS
+        long lastFrameTime = System.nanoTime();
+        long frameCount = 0;
+        long lastFPSTime = System.nanoTime();
 
         while (gameThread != null) {
+            long currentTime = System.nanoTime();
+            long elapsedTime = currentTime - lastFrameTime;
 
-            currentTime = System.nanoTime();
-            delta += (currentTime - lastTime) / drawInterval;
-            timer += (currentTime - lastTime);
-            lastTime = currentTime;
+            if (elapsedTime < targetFrameTime) {
+                // Sleep to cap the frame rate
+                try {
+                    Thread.sleep((targetFrameTime - elapsedTime) / 1000000); // Convert nanoseconds to milliseconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
-            if (delta >= 1) {
+            lastFrameTime = System.nanoTime();
+
+            if (GameLogicDriver.threadRunning()) {
                 update();
-                delta--;
-                drawCount++;
+                frameCount++;
             }
 
-            /*
-            // FPS counter
-            if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
-                drawCount = 0;
-                timer = 0;
+            // Calculate and print actual frame rate every second
+            if (currentTime - lastFPSTime >= 1000000000) {
+                //System.out.println("FPS: " + frameCount);
+                frameCount = 0;
+                lastFPSTime = currentTime;
             }
-            */
         }
+        System.out.println("Thread terminating");
     }
 }

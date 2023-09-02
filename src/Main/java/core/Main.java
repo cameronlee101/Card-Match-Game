@@ -13,16 +13,26 @@ public class Main {
     private static int cardRows = 0;
     private static int cardCols = 0;
     private static volatile boolean validInput = false;
+    private static JFrame window;
 
     public static void main(String[] args) {
         createNewGame();
     }
 
     /**
-     * Creates a new card game
+     * Discards the current game if there is one, and creates a new card game
      */
-    private static void createNewGame() {
-        JFrame window = new JFrame();
+    public static void createNewGame() {
+        if (window != null) {
+            resetWindowSettings(window);
+            GameLogicDriver.reset();
+            cardRows = 0;
+            cardCols = 0;
+            validInput = false;
+        }
+        else {
+            window = new JFrame();
+        }
 
         getUserDimensionsInput(window);
 
