@@ -1,10 +1,10 @@
-package main.java.core;
+package core;
 
-import main.java.entity.Symbol;
-import main.java.game.GameBoard;
-import main.java.game.GameLogicDriver;
-import main.java.game.InfoPanel;
-import main.java.startingInput.InputTextBox;
+import entity.Symbol;
+import game.GameBoard;
+import game.GameLogicDriver;
+import game.InfoPanel;
+import startingInput.InputTextBox;
 
 import javax.swing.*;
 import java.awt.*;

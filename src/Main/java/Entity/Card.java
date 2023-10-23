@@ -1,12 +1,11 @@
-package main.java.entity;
+package entity;
 
-import main.java.game.GameBoard;
-import main.java.game.GameLogicDriver;
+import game.GameBoard;
+import game.GameLogicDriver;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -53,9 +52,11 @@ public class Card {
     //******************************************************************************************************************
     public Card(Symbol cardSymbol) {
         try {
-            sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBack.png"))));
-            sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBackFlipping50.png"))));
-            sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/CardBackFlipping20.png"))));
+            ClassLoader classLoader = Card.class.getClassLoader();
+
+            sprites.add(ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream("images/CardBack.png"))));
+            sprites.add(ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream("images/CardBackFlipping50.png"))));
+            sprites.add(ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream("images/CardBackFlipping20.png"))));
 
             Map<Symbol, String> symbolImagePaths = Map.of(
                 Symbol.Diamond, "CardDiamond",
@@ -71,15 +72,15 @@ public class Card {
             String symbolName = symbolImagePaths.get(cardSymbol);
             if (symbolName != null) {
                 for (int i : new int[]{20, 50}) {
-                    String imagePath = String.format("/main/resources/%sFrontFlipping%d.png", symbolName, i);
-                    sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource(imagePath))));
+                    String imagePath = String.format("images/%sFrontFlipping%d.png", symbolName, i);
+                    sprites.add(ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream(imagePath))));
                 }
-                sprites.add(ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/" + symbolName + ".png"))));
+                sprites.add(ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream("images/" + symbolName + ".png"))));
             }
 
             assert sprites.size() == maxAnimationNum + 1;
         }
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println("Card image loading not working");
             e.printStackTrace();
         }

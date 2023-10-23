@@ -1,12 +1,11 @@
-package main.java.game;
+package game;
 
-import main.java.entity.Card;
+import entity.Card;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -62,9 +61,10 @@ public class GameBoard extends JPanel {
      */
     private void getPanelBackgroundImage() {
         try {
-            panelBackground = ImageIO.read(Objects.requireNonNull(getClass().getResource("/main/resources/Background.png")));
+            ClassLoader classLoader = GameBoard.class.getClassLoader();
+            panelBackground = ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream("images/Background.png")));
         }
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println("Background image loading not working");
             e.printStackTrace();
         }

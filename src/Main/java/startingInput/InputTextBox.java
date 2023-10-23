@@ -1,4 +1,4 @@
-package main.java.startingInput;
+package startingInput;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

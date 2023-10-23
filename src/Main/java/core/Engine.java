@@ -1,6 +1,6 @@
-package main.java.core;
+package core;
 
-import main.java.game.GameLogicDriver;
+import game.GameLogicDriver;
 
 /**
  * Runs the game

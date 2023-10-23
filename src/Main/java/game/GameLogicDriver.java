@@ -1,9 +1,9 @@
-package main.java.game;
+package game;
 
-import main.java.core.Engine;
-import main.java.core.Main;
-import main.java.entity.Card;
-import main.java.entity.Symbol;
+import core.Engine;
+import core.Main;
+import entity.Card;
+import entity.Symbol;
 
 import java.util.ArrayList;
 import java.util.Random;
