@@ -182,7 +182,7 @@ public class Main {
         window.pack();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Memory Game");
+        window.setTitle("Card Match Game");
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setBackground(Color.WHITE);
