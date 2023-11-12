@@ -4,7 +4,7 @@ import entity.Symbol;
 import game.GameBoard;
 import game.GameLogicDriver;
 import game.InfoPanel;
-import startingInput.InputTextBox;
+import startingInput.InputSlider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,22 +48,22 @@ public class Main {
         resetWindowSettings(window);
 
         // Components contained in the panel that goes in the window
-        JLabel label1 = new JLabel("<html>Enter number of rows (min. 1, max. 6):</html>");
-        JLabel label2 = new JLabel("<html>Enter number of columns (min. 4, max. 14):</html>");
-        JLabel errorLabel = new JLabel("<html>note 1: <em>rows * columns</em> must be positive and even\n" +
+        JLabel label1 = new JLabel("<html>Enter number of rows:</html>");
+        JLabel label2 = new JLabel("<html>Enter number of columns:</html>");
+        JLabel errorLabel = new JLabel("<html>note 1: <em>rows * columns</em> must be even<br><br>" +
                 "note 2: there are currently " + Symbol.values().length + " different card symbols in this game." +
                 " If rows * columns is greater than " + (Symbol.values().length*2) + ", there will be more than 1" +
                 " pair of certain cards</html>");
         errorLabel.setPreferredSize(new Dimension(300, 80));
 
-        InputTextBox inputBox1 = new InputTextBox();
-        InputTextBox inputBox2 = new InputTextBox();
+        InputSlider slider1 = new InputSlider(1, 6, 4);
+        InputSlider slider2 = new InputSlider(4, 14, 4);
 
         JButton doneButton = new JButton("Done");
-        doneButton.addActionListener(e -> checkUserInput(inputBox1, inputBox2, errorLabel));
+        doneButton.addActionListener(e -> checkUserInput(slider1, slider2, errorLabel));
 
         // Setting up the window
-        window.setPreferredSize(new Dimension(400, 400));
+        window.setPreferredSize(new Dimension(500, 500));
 
         // Setting up the panel
         JPanel inputPanel = new JPanel(new GridBagLayout());
@@ -78,7 +78,7 @@ public class Main {
 
         c.gridy = 1;
         c.insets = new Insets(10, 0, 10, 0);
-        inputPanel.add(inputBox1, c);
+        inputPanel.add(slider1, c);
 
         c.gridy = 2;
         c.insets = new Insets(20, 0, 10, 0);
@@ -86,7 +86,7 @@ public class Main {
 
         c.gridy = 3;
         c.insets = new Insets(10, 0, 10, 0);
-        inputPanel.add(inputBox2, c);
+        inputPanel.add(slider2, c);
 
         c.gridy = 4;
         c.insets = new Insets(20, 100, 10,100);
@@ -108,34 +108,20 @@ public class Main {
 
     /**
      * Is called when the user clicks the "Done" button. Converts the user's input into ints and validates those numbers
-     * @param textBox1 the text box where user enters the number of rows for the game
-     * @param textBox2 the text box where user enters the number of columns for the game
+     * @param slider1 the slider where user enters the number of rows for the game
+     * @param slider2 the slider where user enters the number of columns for the game
      * @param errorLabel the JLabel that displays any messages relating to erroneous user input
      */
-    private static void checkUserInput(InputTextBox textBox1, InputTextBox textBox2, JLabel errorLabel) {
-        try {
-            cardRows = Integer.parseInt(textBox1.getUserInput());
-            cardCols = Integer.parseInt(textBox2.getUserInput());
+    private static void checkUserInput(InputSlider slider1, InputSlider slider2, JLabel errorLabel) {
+        cardRows = slider1.getUserInput();
+        cardCols = slider2.getUserInput();
 
-            if ((cardRows * cardCols) % 2 == 1 && cardRows > 0 && cardCols > 0) {
-                System.out.println("Number of cards in rows * columns must be even and both must be positive");
-                errorLabel.setText("<html>Error: <em>rows * columns</em> must be positive and even</html>");
-            }
-            else if (cardRows < 1 || cardRows > 6) {
-                System.out.println("Invalid number of cardRows");
-                errorLabel.setText("<html>Error: Invalid number of rows of cards</html>");
-            }
-            else if (cardCols < 4 || cardCols > 14) {
-                System.out.println("Invalid number of cardCols");
-                errorLabel.setText("<html>Error: Invalid number of columns of cards</html>");
-            }
-            else {
-                validInput = true;
-            }
+        if ((cardRows * cardCols) % 2 == 1) {
+            System.out.println("Number of cards in rows * columns must be even");
+            errorLabel.setText("<html>Error: <em>rows * columns</em> must be even</html>");
         }
-        catch (Exception e) {
-            System.out.println("Error reading integer value");
-            errorLabel.setText("<html>Error: Cannot have non-integer value in either input boxes</html>");
+        else {
+            validInput = true;
         }
     }
 
