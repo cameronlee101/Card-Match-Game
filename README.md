@@ -20,6 +20,10 @@ Built entirely in Java, utilizing the Java Swing library and Maven project frame
 
 2) Ensure Java is installed on your system
 
-3) Open a command line and cd into: `/Card-Match-Game/target/`
+3) Open a command line and cd into the repository folder `/Card-Match-Game/`
 
-4) Run: `java -jar Memory-Game-1.0.jar`
+4) run the command `mvnw package` to compile the .jar file
+
+5) cd into `/Card-Match-Game/target/`
+
+6) Run: `java -jar Memory-Game-1.0.jar`
